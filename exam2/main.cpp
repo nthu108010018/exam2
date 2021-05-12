@@ -494,18 +494,7 @@ void menu(int curr_op){
 
     uLCD.text_width(2);
     uLCD.text_height(2);
-    /*for(int j = 0; j<3; j++){
-        if(curr_op == j){
-            uLCD.color(RED);
-            uLCD.printf(options[j]);
-            uLCD.printf("\n");
-            uLCD.color(GREEN);
-        }
-        else{
-            uLCD.printf(options[j]);
-            uLCD.printf("\n");
-        }
-    }*/
+
     uLCD.locate(0, 2);
 
     uLCD.printf(options[curr_op]);
@@ -541,11 +530,7 @@ void publish_message(MQTT::Client<MQTTNetwork, Countdown>* client, int index, in
 
     char buff[100];
 
-    char *gest[3] = {
-      "RING", "SLOPE", "PARRALLEL"
-    };
-
-    sprintf(buff, "gesture_index : %s  sequence_number: %d", gest[index],  seq_num);
+    sprintf(buff, "gesture_index : %d  sequence_number: %d", index,  seq_num);
 
     message.qos = MQTT::QOS0;
 
