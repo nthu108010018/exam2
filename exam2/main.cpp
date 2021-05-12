@@ -24,6 +24,7 @@
 const char* host = "192.168.226.124";
 int flag_1 = 1;
 int flag_2 = 0;
+int feature_arr[5] = {0};
 
 Thread gui_thread(osPriorityNormal);
 Thread angle_thread(osPriorityHigh);
@@ -434,7 +435,7 @@ int model_deploy(){
       continue;
 
     }
-
+    
 
     // Run inference, and report any error
 
@@ -464,7 +465,20 @@ int model_deploy(){
 
       error_reporter->Report(config.output_message[gesture_index]);
       menu(gesture_index);
+      int temp;
+      for(int i = 0; i<600; i++){
+        
+        temp = temp + abs(model_input->data.f[i]);
+
+      }
+      printf("%d\n", temp);
+      int feature = 0;
+      if(temp>200000){
+        feature = 1;
+      }
+      feature_arr[sequence_number] = feature;
       sequence_number++;
+
       publish_message(&client, gesture_index, sequence_number);
     }
     /*if(!btn2){
@@ -530,7 +544,7 @@ void publish_message(MQTT::Client<MQTTNetwork, Countdown>* client, int index, in
 
     char buff[100];
 
-    sprintf(buff, "gesture_index : %d  sequence_number: %d", index,  seq_num);
+    sprintf(buff, "gesture_index : %d  sequence_number: %d ", index,  seq_num);
 
     message.qos = MQTT::QOS0;
 
@@ -560,6 +574,8 @@ void close_mqtt() {
 
 void rpcClose1(Arguments *in, Reply *out){
   gui_thread.terminate();
-  flag_1 = 0;
+  for(int i=0; i<5; i++){
+    publish_message(&client, feature_arr[i], -1);
+  }
 }
 
