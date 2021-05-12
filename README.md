@@ -15,3 +15,5 @@ feature為判定晃動幅度
 plot_index.py收到5個以後會畫出圖片
 x軸為sequencenumber y 為index_number
 時間不足未畫出第二個圖片
+
+附圖為半成品
